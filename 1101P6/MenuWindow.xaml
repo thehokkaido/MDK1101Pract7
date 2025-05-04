@@ -1,0 +1,27 @@
+﻿<Window x:Class="_1101P6.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_1101P6"
+        mc:Ignorable="d"
+        Title="Меню таблиц" Height="450" Width="800">
+    <Grid>
+        <Menu VerticalAlignment="Top" Background="LightGray">
+            <MenuItem Header="Таблицы">
+                <MenuItem Header="Hardware" Click="ViewTable1_Click"/>
+                <MenuItem Header="Software" Click="ViewTable2_Click"/>
+                <MenuItem Header="LoginHistory" Click="ViewTable3_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <DataGrid x:Name="TableDataGrid" AutoGenerateColumns="True" Margin="5,23,5,50"/>
+
+        <!-- Кнопки -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
+            <Button Content="Добавить" Width="100" Margin="5" Click="AddButton_Click"/>
+            <Button Content="Изменить" Width="100" Margin="5" Click="EditButton_Click"/>
+            <Button Content="Удалить" Width="100" Margin="5" Click="DeleteButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
