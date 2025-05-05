@@ -19,7 +19,7 @@ namespace _1101P6
 {
 
     public partial class MenuWindow : Window
-    {
+    {   
         private string connectionString = "Host=localhost;Username=postgres;Password=student;Database=itproduction";
         private string currentTableName = ""; // Текущая таблица (итили Hardware, или Software)
 
@@ -224,6 +224,75 @@ namespace _1101P6
             {
                 MessageBox.Show($"Ошибка при удалении записи: {ex.Message}");
             }
+
+        }
+        private void ShowTotalCount(object sender, RoutedEventArgs e)
+        {
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmdHardware = new NpgsqlCommand("SELECT SUM(count) FROM ithardware", conn);
+                var cmdSoftware = new NpgsqlCommand("SELECT SUM(count) FROM itsoftware", conn);
+
+                var totalHardware = cmdHardware.ExecuteScalar()?.ToString() ?? "0";
+                var totalSoftware = cmdSoftware.ExecuteScalar()?.ToString() ?? "0";
+
+                // Вывод в TextBox или Label
+                TotalHardwareText.Text = $"Оборудование: {totalHardware}";
+                TotalSoftwareText.Text = $"ПО: {totalSoftware}";
+            }
+        }
+        private void ShowTopItems(object sender, RoutedEventArgs e)
+        {
+            var data = new List<dynamic>();
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand(@"
+            SELECT 'Hardware' AS type, name, count FROM ithardware
+            UNION ALL
+            SELECT 'Software' AS type, name, count FROM itsoftware
+            ORDER BY count DESC LIMIT 5", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new { Type = reader.GetString(0), Name = reader.GetString(1), Count = reader.GetInt32(2) });
+                    }
+                }
+            }
+            TopItemsGrid.ItemsSource = data;
+        }
+        private void ShowComparison(object sender, RoutedEventArgs e)
+        {
+            var data = new List<dynamic>();
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand(@"
+            WITH totals AS (
+                SELECT 'Hardware' AS category, SUM(count) AS total FROM ithardware
+                UNION ALL
+                SELECT 'Software' AS category, SUM(count) FROM itsoftware
+            )
+            SELECT *, (total * 100 / (SELECT SUM(total) FROM totals)) AS percent
+            FROM totals", conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new
+                        {
+                            Category = reader.GetString(0),
+                            Total = reader.GetInt32(1),
+                            Percent = reader.GetInt32(2)
+                        });
+                    }
+                }
+            }
+            ComparisonGrid.ItemsSource = data;
         }
     }
 }

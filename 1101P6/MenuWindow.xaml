@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_1101P6"
         mc:Ignorable="d"
-        Title="Меню таблиц" Height="450" Width="800">
+        Title="Меню таблиц" Height="650" Width="900">
     <Grid>
         <Menu VerticalAlignment="Top" Background="LightGray">
             <MenuItem Header="Таблицы">
@@ -15,13 +15,42 @@
             </MenuItem>
         </Menu>
 
-        <DataGrid x:Name="TableDataGrid" AutoGenerateColumns="True" Margin="5,23,5,50"/>
+        <DataGrid x:Name="TableDataGrid" AutoGenerateColumns="True" Margin="5,23,5,200"/>
 
         <!-- Кнопки -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,10">
-            <Button Content="Добавить" Width="100" Margin="5" Click="AddButton_Click"/>
-            <Button Content="Изменить" Width="100" Margin="5" Click="EditButton_Click"/>
-            <Button Content="Удалить" Width="100" Margin="5" Click="DeleteButton_Click"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,25">
+
+            <Border BorderThickness="2" BorderBrush="Black">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,10,10">
+                    <Button Content="Показать общее количество" Width="165" Margin="10,10,10,10" Click="ShowTotalCount"/>
+                    <TextBlock x:Name="TotalHardwareText" Width="165" Margin="5,15,5,5"/>
+                    <TextBlock x:Name="TotalSoftwareText" Width="165" Margin="5,15,5,5"/>
+                </StackPanel>
+            </Border>
+
+
+            <Border BorderThickness="2" BorderBrush="Black">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,10,10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,10,10">
+                        <Button Content="Сравнение оборудования и ПО" Click="ShowComparison"/>
+                        <DataGrid x:Name="ComparisonGrid" AutoGenerateColumns="True"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,10">
+                        <Button Content="Добавить" Width="100" Margin="5" Click="AddButton_Click"/>
+                        <Button Content="Изменить" Width="100" Margin="5" Click="EditButton_Click"/>
+                        <Button Content="Удалить" Width="100" Margin="5" Click="DeleteButton_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border BorderThickness="2" BorderBrush="Black">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,10,5,7">
+                    <Button Content="Показать топ-5 товаров" Width="155" Margin="5" Click="ShowTopItems"/>
+                    <DataGrid x:Name="TopItemsGrid" AutoGenerateColumns="True"/>
+                </StackPanel>
+            </Border>
+
+
         </StackPanel>
     </Grid>
 </Window>
